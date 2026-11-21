@@ -49,6 +49,7 @@
     $("#form-status").hidden = true;
   }
   function persist() {
+    $("#cart-notice").hidden = true;
     try {
       localStorage.setItem(storageKey, JSON.stringify(cart));
     } catch {
@@ -98,6 +99,12 @@
   function notify(message) {
     const toast = $("#toast");
     clearTimeout(toastTimeout);
+    if (dialog.open) {
+      toast.classList.remove("visible");
+      $("#cart-notice").textContent = message;
+      $("#cart-notice").hidden = false;
+      return;
+    }
     toast.textContent = message;
     toast.classList.add("visible");
     toastTimeout = setTimeout(() => toast.classList.remove("visible"), 2600);
@@ -136,6 +143,8 @@
   }
   function openCart() {
     previousFocus = document.activeElement;
+    $("#toast").classList.remove("visible");
+    $("#cart-notice").hidden = true;
     if (!dialog.open) dialog.showModal();
     document.body.classList.add("cart-open");
     $("#close-cart").focus();

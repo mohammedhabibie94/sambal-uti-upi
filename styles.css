@@ -810,6 +810,14 @@ dialog::backdrop {
   overscroll-behavior: contain;
   flex: 1;
 }
+.cart-notice {
+  margin: 0;
+  padding: 12px 22px;
+  border-bottom: 1px solid var(--border);
+  background: var(--pale);
+  font-size: 14px;
+  flex-shrink: 0;
+}
 .cart-item {
   display: grid;
   grid-template-columns: 67px 1fr;

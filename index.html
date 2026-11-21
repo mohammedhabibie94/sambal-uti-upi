@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ad251d" />
+    <meta
+      name="description"
+      content="Sambal Uti Upi dari Klaten. Pilih Baby Cumi, Teri Medan, atau Rebon, masukkan ke keranjang, dan pesan langsung melalui WhatsApp."
+    />
+    <title>Sambal Uti Upi — Sambelnya sedep, pedesnya mantep</title>
+    <link rel="icon" href="assets/logo.webp" type="image/webp" />
+    <link
+      rel="preload"
+      href="assets/fonts/roca-bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="config.js" defer></script>
+    <script src="order.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#produk">Langsung ke pilihan sambal</a>
+    <div class="announcement">Dari dapur Klaten, untuk teman makanmu.</div>
+    <header class="site-header">
+      <div class="container nav-row">
+        <a class="brand" href="#beranda" aria-label="Sambal Uti Upi, beranda"
+          ><img
+            src="assets/logo.webp"
+            alt="Sambal Uti Upi"
+            width="66"
+            height="66"
+          /><span>Sambal<br /><strong>Uti Upi</strong></span></a
+        >
+        <nav aria-label="Navigasi utama">
+          <a href="#produk">Pilihan sambal</a
+          ><a href="#cerita">Dari dapur kami</a
+          ><a href="#cara-pesan">Cara pesan</a>
+        </nav>
+        <button class="cart-trigger" data-open-cart aria-haspopup="dialog">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            aria-hidden="true"
+          >
+            <path d="M5 7h14l1 14H4L5 7Z" />
+            <path d="M8 8V6a4 4 0 0 1 8 0v2" /></svg
+          ><span>Keranjang</span
+          ><span class="cart-count" id="cart-count">0</span>
+        </button>
+      </div>
+    </header>
+    <main>
+      <section class="hero container" id="beranda" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="little-line"></span> SAMBAL RUMAHAN DARI KLATEN
+          </p>
+          <h1 id="hero-title">
+            Sambelnya sedep,<br /><em
+              >pedesnya<br />
+              mantep.</em
+            >
+          </h1>
+          <p class="hero-description">
+            Kadang, yang bikin makan terasa lengkap cuma satu: sambal yang pas.
+            Kenalan dengan tiga teman makan barumu.
+          </p>
+          <a class="button primary" href="#produk"
+            >Pilih sambalmu <span aria-hidden="true">↗</span></a
+          >
+          <div class="hero-notes">
+            <span>Dibuat dalam batch kecil</span><span id="hero-weight"></span>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img
+            class="hero-photo"
+            src="assets/hero.webp"
+            alt="Tiga varian Sambal Uti Upi di meja makan: Teri Medan, Baby Cumi, dan Rebon"
+            width="1000"
+            height="1000"
+            fetchpriority="high"
+          />
+          <div class="photo-caption">
+            <span>RASA RUMAH, DALAM BOTOL.</span
+            ><span>Klaten, Jawa Tengah <span aria-hidden="true">↗</span></span>
+          </div>
+        </div>
+      </section>
+      <div class="values-strip">
+        <div class="container">
+          <span>Tiga varian, tiga favorit baru</span
+          ><span aria-hidden="true">✳</span><span>Dari dapur Selmafood</span
+          ><span aria-hidden="true">✳</span
+          ><span>Dipesan langsung lewat WhatsApp</span>
+        </div>
+      </div>
+      <section
+        class="catalog section container"
+        id="produk"
+        aria-labelledby="catalog-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PILIH TEMAN MAKANMU</p>
+            <h2 id="catalog-title">Beda isian.<br />Sama-sama bikin kangen.</h2>
+          </div>
+          <p>
+            Tinggal pilih favorit, atur jumlahnya,<br />lalu kami sambut di
+            WhatsApp.
+          </p>
+        </div>
+        <div class="product-grid" id="products"></div>
+        <noscript
+          ><p class="notice">
+            Aktifkan JavaScript untuk melihat katalog, menghitung keranjang, dan
+            memesan lewat WhatsApp.
+          </p></noscript
+        >
+      </section>
+      <section class="bundle container" aria-labelledby="bundle-title">
+        <div class="bundle-image">
+          <img
+            src="assets/hero.webp"
+            alt="Paket lengkap tiga varian Sambal Uti Upi"
+            width="1000"
+            height="1000"
+            loading="lazy"
+          />
+        </div>
+        <div class="bundle-copy">
+          <p class="eyebrow">NGGAK PERLU PILIH SATU</p>
+          <h2 id="bundle-title"></h2>
+          <p id="bundle-detail"></p>
+          <div class="bundle-price-row">
+            <strong id="bundle-price"></strong
+            ><span id="bundle-shipping"></span>
+          </div>
+          <button class="button light" id="add-bundle">
+            Masukkan paket <span aria-hidden="true">+</span>
+          </button>
+          <p class="bundle-footnote">Tiga rasa untuk menemani meja makanmu.</p>
+        </div>
+      </section>
+      <section
+        class="story section container"
+        id="cerita"
+        aria-labelledby="story-title"
+      >
+        <div>
+          <p class="eyebrow">KECIL BATCH-NYA, BESAR NIATNYA</p>
+          <h2 id="story-title">Dari dapur kami,<br />ke meja makanmu.</h2>
+          <p class="story-description">
+            Di Manisrenggo, Klaten, Sambal Uti Upi dibuat oleh Selmafood dalam
+            jumlah kecil setiap kali masak. Karena buat kami, sambal bukan
+            sekadar pelengkap.
+          </p>
+          <div class="permit">
+            <svg
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"
+            >
+              <path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z" />
+              <path d="m8 12 3 3 5-6" /></svg
+            ><span
+              ><small>IZIN PANGAN INDUSTRI RUMAH TANGGA</small
+              ><strong id="permit-number"></strong
+            ></span>
+          </div>
+        </div>
+        <div class="batch-card">
+          <div class="batch-top">
+            <span>SEKALI MASAK</span><span aria-hidden="true">↗</span>
+          </div>
+          <div class="batch-number">
+            <strong id="batch-total"></strong
+            ><span>botol.<br />Diproduksi per batch.</span>
+          </div>
+          <div class="batch-breakdown" id="batch-breakdown"></div>
+          <p id="batch-note"></p>
+        </div>
+      </section>
+      <section class="how-section" id="cara-pesan" aria-labelledby="how-title">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">DARI PILIH, JADI PESAN</p>
+              <h2 id="how-title">Mudah. Langsung. Personal.</h2>
+            </div>
+            <a
+              class="text-link"
+              id="contact-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Tanya kami dulu <span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <ol class="steps">
+            <li>
+              <span class="step-number">01</span>
+              <h3>Pilih sambal</h3>
+              <p>Pilih varian atau paket lengkap, lalu tentukan jumlahnya.</p>
+            </li>
+            <li>
+              <span class="step-number">02</span>
+              <h3>Cek keranjang</h3>
+              <p>Lihat rincian pesanan dan isi nama serta alamat pengiriman.</p>
+            </li>
+            <li>
+              <span class="step-number">03</span>
+              <h3>Lanjut ke WhatsApp</h3>
+              <p>
+                Kirim pesan pesanan. Admin akan mengonfirmasi ketersediaan dan
+                pembayaran.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </section>
+      <section class="closing container">
+        <p class="eyebrow">NASI HANGAT SUDAH SIAP?</p>
+        <h2>Sambalnya jangan sampai lupa.</h2>
+        <a class="button primary" href="#produk"
+          >Yuk, pilih sambal <span aria-hidden="true">↗</span></a
+        >
+      </section>
+    </main>
+    <footer>
+      <div class="container footer-top">
+        <div>
+          <a class="footer-brand" href="#beranda"
+            >Sambal Uti Upi<span aria-hidden="true">.</span></a
+          >
+          <p>Sambelnya sedep, pedesnya mantep.</p>
+        </div>
+        <div>
+          <span class="footer-label">DIBUAT OLEH</span>
+          <p id="producer-info"></p>
+        </div>
+        <div>
+          <span class="footer-label">MARI TERHUBUNG</span
+          ><a id="instagram-link" target="_blank" rel="noopener noreferrer"></a
+          ><a
+            id="footer-whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+          ></a>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>Rasa rumah dari Klaten, Jawa Tengah.</span
+        ><a href="#beranda">Kembali ke atas ↑</a>
+      </div>
+    </footer>
+    <button class="mobile-cart" data-open-cart aria-haspopup="dialog" hidden>
+      <span>Lihat keranjang <span id="mobile-count"></span></span
+      ><strong id="mobile-total"></strong><span aria-hidden="true">→</span>
+    </button>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <dialog id="cart-dialog" aria-labelledby="cart-title">
+      <div class="cart-header">
+        <div>
+          <p class="eyebrow">TINGGAL SELANGKAH LAGI</p>
+          <h2 id="cart-title">Keranjangmu</h2>
+        </div>
+        <button
+          class="icon-button"
+          id="close-cart"
+          aria-label="Tutup keranjang"
+        >
+          ×
+        </button>
+      </div>
+      <div class="cart-body">
+        <div id="cart-empty">
+          <div class="empty-symbol" aria-hidden="true">＋</div>
+          <h3>Belum ada teman makan?</h3>
+          <p>Yuk, pilih sambal favoritmu dulu.</p>
+          <button class="button primary" id="browse-products">
+            Lihat pilihan sambal <span aria-hidden="true">→</span>
+          </button>
+        </div>
+        <div id="cart-filled" hidden>
+          <div id="cart-items"></div>
+          <div class="cart-summary">
+            <div>
+              <span id="total-label">Subtotal produk</span
+              ><strong id="cart-total"></strong>
+            </div>
+            <p id="shipping-note"></p>
+            <p class="cart-bottles" id="cart-bottles"></p>
+          </div>
+          <form id="checkout-form">
+            <h3>Mau dikirim ke mana?</h3>
+            <label for="customer-name">Nama penerima</label
+            ><input
+              id="customer-name"
+              name="name"
+              autocomplete="shipping name"
+              required
+              maxlength="100"
+              placeholder="Nama lengkap"
+            />
+            <label for="customer-address">Alamat lengkap</label
+            ><textarea
+              id="customer-address"
+              name="address"
+              autocomplete="shipping street-address"
+              required
+              maxlength="600"
+              rows="3"
+              placeholder="Jalan, nomor rumah, kecamatan, kota, provinsi, dan kode pos"
+            ></textarea>
+            <label for="customer-note">Catatan <span>(opsional)</span></label
+            ><textarea
+              id="customer-note"
+              name="note"
+              maxlength="400"
+              rows="2"
+              placeholder="Ada yang ingin disampaikan?"
+            ></textarea>
+            <p class="checkout-note">
+              Pesanan belum terkonfirmasi sampai admin membalas. Data penerima
+              hanya disertakan dalam pesan WhatsApp, tidak disimpan di situs.
+            </p>
+            <button class="button primary checkout-button" type="submit">
+              Lanjut ke WhatsApp <span aria-hidden="true">↗</span>
+            </button>
+            <p class="form-status" id="form-status" role="status" hidden>
+              Pesan pesanan sudah disiapkan. Kirim di WhatsApp untuk
+              melanjutkan.
+              <a
+                id="whatsapp-fallback"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Buka WhatsApp lagi ↗</a
+              >
+            </p>
+          </form>
+        </div>
+      </div>
+    </dialog>
+  </body>
+</html>

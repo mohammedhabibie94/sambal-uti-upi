@@ -69,8 +69,9 @@ test("pesanan paket ditambah satuan tidak menjanjikan ongkir seluruh pesanan", (
   assert.equal(result.bottles, 4);
   assert.equal(result.bundleOnly, false);
   assert.equal(result.hasBundle, true);
-  assert.match(order.shippingText(result), /botol tambahan di luar paket/);
-  assert.match(order.shippingText(result), /termasuk dalam satu kiriman/);
+  assert.match(order.shippingText(result), /botol tambahan/);
+  assert.match(order.shippingText(result), /meski satu kiriman/);
+  assert.match(order.shippingText(result), /WhatsApp sebelum pembayaran/);
 });
 test("data tersimpan yang rusak atau dimanipulasi disaring", () => {
   for (const input of [null, false, 12, "cumi", []])
@@ -95,7 +96,8 @@ test("tautan WhatsApp membawa rincian, penerima, alamat multiline, dan karakter 
   assert.equal(url.pathname, "/6285727045057");
   const message = url.searchParams.get("text");
   assert.match(message, /Baby Cumi \(80g\)\n  2 × Rp28.000 = Rp56.000/);
-  assert.match(message, /Subtotal produk: Rp79.000/);
+  assert.match(message, /Harga sambal: Rp79.000/);
+  assert.match(message, /Belum termasuk ongkir/);
   assert.match(message, /Nama: Pelanggan Uji\n/);
   assert.ok(message.includes(customer.address));
   assert.ok(message.includes(customer.note));

@@ -24,6 +24,7 @@
   let cart = {};
   let toastTimeout;
   let previousFocus;
+  const addLocks = new Set();
   try {
     cart = order.sanitizeCart(
       JSON.parse(localStorage.getItem(storageKey)),
@@ -40,7 +41,7 @@
     $("#products").innerHTML = config.products
       .map(
         (p) =>
-          `<article class="product-card"><div class="product-photo-wrap"><img class="product-photo" src="${escape(p.image)}" alt="Sambal ${escape(p.name)} Uti Upi dengan sajian sambalnya" width="720" height="720" loading="lazy"></div><div class="product-topline"><h3>${escape(p.name)}</h3><span class="weight">Neto ${config.weightGrams}g</span></div><p class="product-description">${escape(p.description)}</p><strong class="product-price">${money(p.price)}</strong><div class="product-actions"><div id="draft-${p.id}">${quantityControls(p.id, draft[p.id], "catalog")}</div><button class="add-button" data-add="${p.id}" aria-label="Masukkan ${escape(p.name)} ke keranjang">Masukkan <span aria-hidden="true">+</span></button></div></article>`,
+          `<article class="product-card"><div class="product-photo-wrap"><img class="product-photo" src="${escape(p.image)}" alt="Sambal ${escape(p.name)} Uti Upi dengan sajian sambalnya" width="720" height="720" loading="lazy"></div><div class="product-topline"><h3>${escape(p.name)}</h3><span class="weight">Berat bersih ${config.weightGrams}g</span></div><p class="product-description">${escape(p.description)}</p><strong class="product-price">${money(p.price)}</strong><div class="product-actions"><div id="draft-${p.id}">${quantityControls(p.id, draft[p.id], "catalog")}</div><button class="add-button" data-add="${p.id}" aria-label="Tambah ${escape(p.name)} ke keranjang"><span class="add-label">Tambah ke keranjang</span><span aria-hidden="true">+</span></button></div></article>`,
       )
       .join("");
   }
@@ -64,6 +65,7 @@
       `Buka keranjang, ${result.bottles} botol`,
     );
     $(".mobile-cart").hidden = !result.count;
+    document.body.classList.toggle("has-cart-items", Boolean(result.count));
     $("#mobile-count").textContent = `(${result.bottles} botol)`;
     $("#mobile-total").textContent = money(result.total);
     $("#cart-empty").hidden = Boolean(result.count);
@@ -83,7 +85,8 @@
       .join("");
     $("#total-label").textContent = result.bundleOnly
       ? "Total"
-      : "Subtotal produk";
+      : "Harga sambal";
+    $("#shipping-exclusion").hidden = result.bundleOnly;
     $("#cart-total").textContent = money(result.total);
     $("#shipping-note").textContent = order.shippingText(result);
     $("#cart-bottles").textContent =
@@ -100,6 +103,18 @@
     toastTimeout = setTimeout(() => toast.classList.remove("visible"), 2600);
   }
   function add(id, amount) {
+    if (addLocks.has(id)) return;
+    addLocks.add(id);
+    const addButton =
+      id === config.bundle.id ? $("#add-bundle") : $(`[data-add="${id}"]`);
+    const previousLabel = addButton.innerHTML;
+    addButton.disabled = true;
+    addButton.textContent = "Sudah ditambahkan";
+    setTimeout(() => {
+      addLocks.delete(id);
+      addButton.disabled = false;
+      addButton.innerHTML = previousLabel;
+    }, 1200);
     const current = cart[id] || 0;
     const next = Math.min(99, current + amount);
     cart[id] = next;
@@ -210,6 +225,7 @@
     $("#whatsapp-fallback").href = url;
     $("#form-status").hidden = false;
     window.open(url, "_blank", "noopener,noreferrer");
+    $("#form-status").scrollIntoView({ block: "nearest", behavior: "instant" });
   });
   window.addEventListener("storage", (event) => {
     if (event.key === storageKey || event.key === null) {
@@ -222,7 +238,8 @@
       renderCart();
     }
   });
-  $("#hero-weight").textContent = `Neto ${config.weightGrams}g per botol`;
+  $("#hero-weight").textContent =
+    `Berat bersih ${config.weightGrams}g per botol`;
   $("#bundle-title").textContent = config.bundle.name;
   $("#bundle-detail").textContent =
     Object.entries(config.bundle.items)

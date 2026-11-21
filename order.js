@@ -66,8 +66,8 @@
   function shippingText(order) {
     if (order.bundleOnly) return "Gratis ongkir";
     if (order.hasBundle)
-      return "Gratis ongkir hanya untuk paket. Ongkir botol tambahan di luar paket, termasuk dalam satu kiriman, dikonfirmasi admin sebelum pesanan disetujui.";
-    return "Ongkir dikonfirmasi admin melalui WhatsApp.";
+      return "Gratis ongkir hanya untuk paket. Ongkir botol tambahan, meski satu kiriman, dikonfirmasi admin di WhatsApp sebelum pembayaran.";
+    return "Ongkir dikonfirmasi admin di WhatsApp sebelum pembayaran.";
   }
   function orderMessage(raw, customer, config) {
     const order = calculate(raw, config);
@@ -84,7 +84,7 @@
           : ` (${config.weightGrams}g)`;
       return `• ${line.name}${detail}\n  ${line.quantity} × ${rupiah(line.price)} = ${rupiah(line.subtotal)}`;
     });
-    const label = order.bundleOnly ? "Total" : "Subtotal produk";
+    const label = order.bundleOnly ? "Total" : "Harga sambal";
     return [
       `Halo ${config.brand}, saya ingin pesan:`,
       "",
@@ -92,6 +92,7 @@
       "",
       `Jumlah: ${order.bottles} botol`,
       `${label}: ${rupiah(order.total)}`,
+      ...(!order.bundleOnly ? ["Belum termasuk ongkir."] : []),
       `Pengiriman: ${shippingText(order)}`,
       "",
       `Nama: ${customer.name.trim()}`,

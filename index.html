@@ -74,10 +74,10 @@
             Kenalan dengan tiga teman makan barumu.
           </p>
           <a class="button primary" href="#produk"
-            >Pilih sambalmu <span aria-hidden="true">↗</span></a
+            >Pilih sambalmu <span aria-hidden="true">→</span></a
           >
           <div class="hero-notes">
-            <span>Dibuat dalam batch kecil</span><span id="hero-weight"></span>
+            <span>Dimasak sedikit-sedikit</span><span id="hero-weight"></span>
           </div>
         </div>
         <div class="hero-visual">
@@ -91,7 +91,7 @@
           />
           <div class="photo-caption">
             <span>RASA RUMAH, DALAM BOTOL.</span
-            ><span>Klaten, Jawa Tengah <span aria-hidden="true">↗</span></span>
+            ><span>Klaten, Jawa Tengah</span>
           </div>
         </div>
       </section>
@@ -147,7 +147,7 @@
           <div class="bundle-actions">
             <div id="draft-bundle"></div>
             <button class="button light" id="add-bundle">
-              Masukkan paket <span aria-hidden="true">+</span>
+              Tambah paket <span aria-hidden="true">+</span>
             </button>
           </div>
           <p class="bundle-footnote" id="bundle-benefit"></p>
@@ -159,7 +159,7 @@
         aria-labelledby="story-title"
       >
         <div>
-          <p class="eyebrow">KECIL BATCH-NYA, BESAR NIATNYA</p>
+          <p class="eyebrow">DIMASAK SEDIKIT, DENGAN SEPENUH HATI</p>
           <h2 id="story-title">Dari dapur kami,<br />ke meja makanmu.</h2>
           <p class="story-description">
             Di Manisrenggo, Klaten, Sambal Uti Upi dibuat oleh Selmafood dalam
@@ -186,11 +186,15 @@
         </div>
         <div class="batch-card">
           <div class="batch-top">
-            <span>SEKALI MASAK</span><span aria-hidden="true">↗</span>
+            <span>JUMLAH PRODUKSI SEKALI MASAK</span>
           </div>
           <div class="batch-number">
             <strong id="batch-total"></strong
-            ><span>botol.<br />Diproduksi per batch.</span>
+            ><span
+              >botol dibuat.<br /><strong class="not-stock"
+                >Bukan stok hari ini.</strong
+              ></span
+            >
           </div>
           <div class="batch-breakdown" id="batch-breakdown"></div>
           <p id="batch-note"></p>
@@ -237,7 +241,7 @@
         <p class="eyebrow">NASI HANGAT SUDAH SIAP?</p>
         <h2>Sambalnya jangan sampai lupa.</h2>
         <a class="button primary" href="#produk"
-          >Yuk, pilih sambal <span aria-hidden="true">↗</span></a
+          >Yuk, pilih sambal <span aria-hidden="true">→</span></a
         >
       </section>
     </main>
@@ -306,9 +310,12 @@
           </div>
           <div class="cart-summary">
             <div>
-              <span id="total-label">Subtotal produk</span
+              <span id="total-label">Harga sambal</span
               ><strong id="cart-total"></strong>
             </div>
+            <p class="shipping-exclusion" id="shipping-exclusion">
+              Belum termasuk ongkir.
+            </p>
             <p id="shipping-note"></p>
             <p class="cart-bottles" id="cart-bottles"></p>
           </div>
@@ -333,7 +340,8 @@
               rows="3"
               placeholder="Jalan, nomor rumah, kecamatan, kota, provinsi, dan kode pos"
             ></textarea>
-            <label for="customer-note">Catatan <span>(opsional)</span></label
+            <label for="customer-note"
+              >Catatan <span>(boleh dikosongkan)</span></label
             ><textarea
               id="customer-note"
               name="note"
@@ -345,12 +353,17 @@
               Pesanan belum terkonfirmasi sampai admin membalas. Data penerima
               hanya disertakan dalam pesan WhatsApp, tidak disimpan di situs.
             </p>
+            <p class="send-reminder">
+              <strong>Langkah berikutnya:</strong> WhatsApp akan terbuka. Tekan
+              <strong>Kirim</strong> di WhatsApp agar pesananmu diterima admin.
+            </p>
             <button class="button primary checkout-button" type="submit">
               Lanjut ke WhatsApp <span aria-hidden="true">↗</span>
             </button>
             <p class="form-status" id="form-status" role="status" hidden>
-              Pesan pesanan sudah disiapkan. Kirim di WhatsApp untuk
-              melanjutkan.
+              <strong>Belum terkirim. Tekan Kirim di WhatsApp.</strong> Rincian
+              pesananmu sudah siap. Jika WhatsApp belum terbuka, tekan tautan di
+              bawah ini.
               <a
                 id="whatsapp-fallback"
                 target="_blank"

@@ -44,7 +44,7 @@ Tidak memerlukan PHP, database, konfigurasi routing SPA, atau environment variab
 - Jika isi tiga varian lengkap sudah ada sebagai satuan, keranjang menawarkan tombol mengubah **satu set** menjadi paket agar pelanggan dapat memilih promo gratis ongkir. Tidak ada konversi otomatis.
 - Harga dihitung di browser. Keranjang tersimpan di `localStorage` perangkat; jika penyimpanan tidak tersedia, keranjang tetap bekerja selama halaman terbuka.
 - Jumlah maksimal per item 99 untuk menjaga pesan tetap praktis; bukan klaim stok. Pesanan lebih besar dapat ditanyakan langsung ke admin.
-- Paket memiliki isi dan harga sendiri. Gratis ongkir hanya untuk paket; ongkir botol tambahan di luar paket, termasuk dalam satu kiriman, dikonfirmasi admin sebelum pesanan disetujui. Tidak ada ongkir rekaan atau diskon otomatis.
+- Paket memiliki isi dan harga sendiri. Gratis ongkir hanya untuk paket; ongkir botol tambahan, meski dalam satu kiriman, dikonfirmasi admin di WhatsApp sebelum pembayaran. Tidak ada ongkir rekaan atau diskon otomatis.
 - Nama dan alamat wajib; catatan opsional. Data penerima tidak disimpan di browser oleh situs dan hanya masuk ke pesan WhatsApp saat pelanggan melanjutkan.
 - Tombol checkout membuka `wa.me` dengan pesan terformat. Pelanggan tetap harus menekan **Kirim** di WhatsApp. Ketersediaan dan pembayaran dikonfirmasi admin.
 - Jika tab WhatsApp diblokir browser, gunakan tautan **Buka WhatsApp lagi** yang muncul di keranjang.

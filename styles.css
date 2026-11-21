@@ -1,7 +1,7 @@
 @font-face {
   font-family: Roca;
-  src: url("assets/fonts/roca-bold.woff2") format("woff2");
-  font-display: swap;
+  src: url("assets/fonts/roca-latin.woff2") format("woff2");
+  font-display: optional;
   font-weight: 700;
 }
 :root {
@@ -1485,6 +1485,38 @@ footer .footer-top > div:last-child a {
 .cart-header .eyebrow {
   font-size: 12px;
 }
+.product-photo-wrap,
+.bundle-image {
+  position: relative;
+  background: var(--pale);
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+.product-photo-wrap::before,
+.bundle-image::before {
+  content: "Foto sambal sedang dimuat…";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.product-photo,
+.bundle-image img {
+  position: relative;
+}
+.hero-photo {
+  background: var(--pale);
+}
+.quantity button,
+.cart-item .quantity button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.cart-trigger svg {
+  flex-shrink: 0;
+}
 .cart-item-total {
   font-size: 16px;
 }
@@ -1501,6 +1533,7 @@ footer .footer-top > div:last-child a {
   .hero-notes {
     flex-wrap: wrap;
     gap: 8px 15px;
+    min-height: 42px;
   }
   .hero-notes span + span {
     border-left: 0;

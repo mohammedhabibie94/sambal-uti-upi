@@ -22,6 +22,8 @@ window.SAMBAL_CONFIG = {
       name: "Baby Cumi",
       price: 28000,
       image: "assets/baby-cumi.webp",
+      imageSmall: "assets/baby-cumi-400.webp",
+      thumbnail: "assets/baby-cumi-thumb.webp",
       batch: 12,
       description:
         "Sambal dan baby cumi. Teman nasi hangat yang bikin suapan berikutnya ditunggu.",
@@ -31,6 +33,8 @@ window.SAMBAL_CONFIG = {
       name: "Teri Medan",
       price: 28000,
       image: "assets/teri-medan.webp",
+      imageSmall: "assets/teri-medan-400.webp",
+      thumbnail: "assets/teri-medan-thumb.webp",
       batch: 6,
       description:
         "Perpaduan sambal dan teri Medan untuk melengkapi menu makan sehari-hari.",
@@ -40,6 +44,8 @@ window.SAMBAL_CONFIG = {
       name: "Rebon",
       price: 23000,
       image: "assets/rebon.webp",
+      imageSmall: "assets/rebon-400.webp",
+      thumbnail: "assets/rebon-thumb.webp",
       batch: 7,
       description:
         "Sambal dengan udang rebon. Pas jadi teman lauk dan nasi favoritmu.",
@@ -52,5 +58,6 @@ window.SAMBAL_CONFIG = {
     freeShipping: true,
     items: { cumi: 1, teri: 1, rebon: 1 },
     image: "assets/hero.webp",
+    thumbnail: "assets/hero-thumb.webp",
   },
 };

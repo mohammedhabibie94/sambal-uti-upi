@@ -41,7 +41,7 @@
     $("#products").innerHTML = config.products
       .map(
         (p) =>
-          `<article class="product-card"><div class="product-photo-wrap"><img class="product-photo" src="${escape(p.image)}" alt="Sambal ${escape(p.name)} Uti Upi dengan sajian sambalnya" width="720" height="720" loading="lazy"></div><div class="product-topline"><h3>${escape(p.name)}</h3><span class="weight">Berat bersih ${config.weightGrams}g</span></div><p class="product-description">${escape(p.description)}</p><strong class="product-price">${money(p.price)}</strong><div class="product-actions"><div id="draft-${p.id}">${quantityControls(p.id, draft[p.id], "catalog")}</div><button class="add-button" data-add="${p.id}" aria-label="Tambah ${escape(p.name)} ke keranjang"><span class="add-label">Tambah ke keranjang</span><span aria-hidden="true">+</span></button></div></article>`,
+          `<article class="product-card"><div class="product-photo-wrap"><img class="product-photo" src="${escape(p.imageSmall || p.image)}" ${p.imageSmall ? `srcset="${escape(p.imageSmall)} 400w, ${escape(p.image)} 720w" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) calc((100vw - 116px) / 3), (max-width: 1440px) calc((100vw - 164px) / 3), 396px"` : ""} alt="Sambal ${escape(p.name)} Uti Upi dengan sajian sambalnya" width="720" height="720" loading="lazy" decoding="async"></div><div class="product-topline"><h3>${escape(p.name)}</h3><span class="weight">Berat bersih ${config.weightGrams}g</span></div><p class="product-description">${escape(p.description)}</p><strong class="product-price">${money(p.price)}</strong><div class="product-actions"><div id="draft-${p.id}">${quantityControls(p.id, draft[p.id], "catalog")}</div><button class="add-button" data-add="${p.id}" aria-label="Tambah ke keranjang: ${escape(p.name)}"><span class="add-label">Tambah ke keranjang</span><span aria-hidden="true">+</span></button></div></article>`,
       )
       .join("");
   }
@@ -62,7 +62,7 @@
     $("#cart-count").textContent = result.bottles;
     $(".cart-trigger").setAttribute(
       "aria-label",
-      `Buka keranjang, ${result.bottles} botol`,
+      `Keranjang ${result.bottles} botol`,
     );
     $(".mobile-cart").hidden = !result.count;
     document.body.classList.toggle("has-cart-items", Boolean(result.count));
@@ -73,7 +73,7 @@
     $("#cart-items").innerHTML = result.lines
       .map(
         (p) =>
-          `<article class="cart-item" data-cart-item="${p.id}"><img src="${escape(p.image)}" alt="" width="67" height="78"><div><div class="cart-item-heading"><h3>${escape(p.name)}</h3><strong class="cart-item-total">${money(p.subtotal)}</strong></div><p class="cart-unit">${money(p.price)} / ${
+          `<article class="cart-item" data-cart-item="${p.id}"><img src="${escape(p.thumbnail || p.imageSmall || p.image)}" alt="" width="67" height="78"><div><div class="cart-item-heading"><h3>${escape(p.name)}</h3><strong class="cart-item-total">${money(p.subtotal)}</strong></div><p class="cart-unit">${money(p.price)} / ${
             p.id === config.bundle.id
               ? "paket · " +
                 Object.entries(config.bundle.items)

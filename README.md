@@ -8,7 +8,7 @@ Situs pemesanan **statis**, berbahasa Indonesia, tanpa backend, database, akun p
 
 Contoh: untuk mengubah harga Baby Cumi, cari produk dengan `id: 'cumi'`, lalu ubah angka `price` (rupiah bulat, tanpa titik atau `Rp`). Harga katalog, keranjang, dan pesan WhatsApp otomatis mengikuti. Harga paket terpisah di `bundle.price`; tidak otomatis mengikuti jumlah harga satuan. Jangan mengubah harga, berat, atau izin tanpa persetujuan pemilik.
 
-- `products`: tiga varian, masing-masing memiliki `id`, `name`, `price`, `image`, `batch`, dan `description`.
+- `products`: tiga varian, masing-masing memiliki `id`, `name`, `price`, `image`, `imageSmall` (versi 400px), `thumbnail` (versi kecil untuk keranjang), `batch`, dan `description`. Jika mengganti foto, perbarui ketiga path tersebut; `imageSmall` dan `thumbnail` boleh dihapus jika hanya ada satu foto.
 - `weightGrams`: berat bersih setiap botol.
 - `bundle.items`: jumlah masing-masing varian dalam satu paket. ID mengacu pada `products`.
 - `bundle.freeShipping`: gratis ongkir khusus paket; produk satuan tidak otomatis mendapat promo.
@@ -29,13 +29,15 @@ Buka `http://localhost:8000`. Tidak ada proses build atau dependensi runtime. Fo
 ## Deploy ke cPanel / public_html
 
 1. Cadangkan situs lama dan catat document root domain di menu **Domains**. Untuk domain utama biasanya `public_html`; addon domain mungkin memakai folder berbeda.
-2. Buat ZIP berisi **`index.html`, `styles.css`, `config.js`, `order.js`, `app.js`, dan folder `assets/`**. File-file itu harus di akar ZIP, bukan di dalam satu folder proyek tambahan. Jangan sertakan `.git`, `tests`, atau `node_modules`.
-3. Di **cPanel → File Manager**, buka document root domain. Upload ZIP, lalu pilih **Extract**. Pastikan `index.html` langsung berada di `public_html` (atau document root domain), dan `assets/` ada di sebelahnya.
+2. Buat ZIP berisi **`index.html`, `styles.css`, `config.js`, `order.js`, `app.js`, `.htaccess`, dan folder `assets/`**. File-file itu harus di akar ZIP, bukan di dalam satu folder proyek tambahan. Jangan sertakan `.git`, `tests`, atau `node_modules`. Di macOS/Linux bisa memakai `zip -r sambal-uti-upi.zip index.html styles.css config.js order.js app.js .htaccess assets` dari folder proyek. **Jika hosting sudah memiliki `.htaccess`, jangan masukkan `.htaccess` proyek ke ZIP**; gabungkan isinya secara terpisah lewat editor setelah mencadangkan file hosting.
+3. Di **cPanel → File Manager**, aktifkan **Settings → Show Hidden Files (dotfiles)** agar `.htaccess` terlihat, lalu buka document root domain. Jika sudah ada `.htaccess`, cadangkan dan gabungkan blok kompresi/cache dari proyek ke konfigurasi yang ada; jangan menimpa aturan hosting lama. Upload ZIP, lalu pilih **Extract**. Pastikan `index.html` dan `.htaccess` langsung berada di `public_html` (atau document root domain), dan `assets/` ada di sebelahnya.
 4. Hapus atau pindahkan file indeks lama yang berbenturan, seperti `index.php`, **setelah membuat cadangan**. Jangan menghapus file hosting lain, folder `.well-known`, atau konfigurasi domain secara sembarang.
 5. Pastikan SSL aktif. Buka domain menggunakan HTTPS, lalu lakukan hard refresh atau hapus cache hosting/CDN jika tampilan masih lama. Hapus ZIP setelah ekstraksi.
 6. Cek di ponsel: pilih produk, ubah jumlah, tambahkan paket, buka keranjang, isi penerima, dan tekan **Lanjut ke WhatsApp**. Periksa nomor tujuan dan pesan sebelum mengirim; tidak ada pesanan yang dikirim otomatis.
 
 Tidak memerlukan PHP, database, konfigurasi routing SPA, atau environment variable. Path relatif juga mendukung pemasangan di subfolder.
+
+`.htaccess` mengaktifkan gzip untuk teks serta cache foto 30 hari dan font 1 tahun bila modul Apache tersedia. HTML, CSS, dan JavaScript (termasuk harga di `config.js`) wajib divalidasi ulang agar perubahan harga tidak tertahan cache lama. Saat mengganti foto/font gunakan nama file baru, atau bersihkan cache hosting/CDN. Server Python lokal tidak menerapkan `.htaccess`; verifikasi header `Content-Encoding` dan `Cache-Control` setelah deploy di hosting sebenarnya.
 
 ## Cara kerja pemesanan
 
@@ -64,3 +66,5 @@ Tes mencakup data resmi, total campuran, isi paket, aturan ongkir, keranjang rus
 ## Aset
 
 Foto produk, hero, logo, dan font Roca diambil dari situs Sambal Uti Upi yang sudah ada (`https://sambalutiupi.web.id/assets/`). Foto dan logo dioptimalkan menjadi WebP untuk mengurangi ukuran transfer. Foto tidak diganti dengan gambar stok. Teks placeholder situs lama dihapus; angka pada teks situs mengikuti data pemilik, bukan informasi lama yang tidak konsisten.
+
+Foto memakai `srcset` sesuai lebar layar serta thumbnail khusus keranjang. Area foto memiliki latar/penanda saat memuat. Font lokal disubset ke Latin dan memakai `font-display: optional` agar koneksi lambat tidak menggeser teks. CSS tampilan awal di-inline di `index.html`; saat mengubah gaya header/hero, selaraskan bagian tersebut dengan `styles.css`. CSS lengkap dimuat tanpa menghalangi tampilan awal, dengan fallback untuk browser tanpa JavaScript.

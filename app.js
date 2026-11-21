@@ -105,24 +105,33 @@
   function add(id, amount) {
     if (addLocks.has(id)) return;
     addLocks.add(id);
+    const current = cart[id] || 0;
+    const next = Math.min(99, current + amount);
+    const added = next - current;
     const addButton =
       id === config.bundle.id ? $("#add-bundle") : $(`[data-add="${id}"]`);
     const previousLabel = addButton.innerHTML;
     addButton.disabled = true;
-    addButton.textContent = "Sudah ditambahkan";
+    addButton.textContent = !added
+      ? "Batas 99 per item"
+      : added < amount
+        ? `Ditambah ${added} dari ${amount}`
+        : "Sudah ditambahkan";
     setTimeout(() => {
       addLocks.delete(id);
       addButton.disabled = false;
       addButton.innerHTML = previousLabel;
     }, 1200);
-    const current = cart[id] || 0;
-    const next = Math.min(99, current + amount);
-    cart[id] = next;
-    persist();
+    if (added) {
+      cart[id] = next;
+      persist();
+    }
     notify(
-      next === current
+      !added
         ? "Maksimal 99 per item. Hubungi kami untuk pesanan lebih besar."
-        : `${byId[id].name} ditambahkan ke keranjang.`,
+        : added < amount
+          ? `Hanya ${added} ${byId[id].name} ditambahkan. Maksimal 99 per item.`
+          : `${byId[id].name} ditambahkan ke keranjang.`,
     );
   }
   function openCart() {

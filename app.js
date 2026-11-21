@@ -18,7 +18,7 @@
     );
   const products = [...config.products, config.bundle];
   const byId = Object.fromEntries(products.map((p) => [p.id, p]));
-  const draft = Object.fromEntries(config.products.map((p) => [p.id, 1]));
+  const draft = Object.fromEntries(products.map((p) => [p.id, 1]));
   const storageKey = "sambal-uti-upi-cart-v1";
   const dialog = $("#cart-dialog");
   let cart = {};
@@ -40,7 +40,7 @@
     $("#products").innerHTML = config.products
       .map(
         (p) =>
-          `<article class="product-card"><div class="product-photo-wrap"><img class="product-photo" src="${escape(p.image)}" alt="Sambal ${escape(p.name)} Uti Upi dengan sajian sambalnya" width="720" height="720" loading="lazy"></div><div class="product-topline"><h3>${escape(p.name)}</h3><span class="weight">NETO ${config.weightGrams} G</span></div><p class="product-description">${escape(p.description)}</p><strong class="product-price">${money(p.price)}</strong><div class="product-actions"><div id="draft-${p.id}">${quantityControls(p.id, draft[p.id], "catalog")}</div><button class="add-button" data-add="${p.id}" aria-label="Masukkan ${escape(p.name)} ke keranjang">Masukkan <span aria-hidden="true">+</span></button></div></article>`,
+          `<article class="product-card"><div class="product-photo-wrap"><img class="product-photo" src="${escape(p.image)}" alt="Sambal ${escape(p.name)} Uti Upi dengan sajian sambalnya" width="720" height="720" loading="lazy"></div><div class="product-topline"><h3>${escape(p.name)}</h3><span class="weight">Neto ${config.weightGrams}g</span></div><p class="product-description">${escape(p.description)}</p><strong class="product-price">${money(p.price)}</strong><div class="product-actions"><div id="draft-${p.id}">${quantityControls(p.id, draft[p.id], "catalog")}</div><button class="add-button" data-add="${p.id}" aria-label="Masukkan ${escape(p.name)} ke keranjang">Masukkan <span aria-hidden="true">+</span></button></div></article>`,
       )
       .join("");
   }
@@ -58,7 +58,7 @@
   }
   function renderCart() {
     const result = order.calculate(cart, config);
-    $("#cart-count").textContent = result.count;
+    $("#cart-count").textContent = result.bottles;
     $(".cart-trigger").setAttribute(
       "aria-label",
       `Buka keranjang, ${result.bottles} botol`,
@@ -88,6 +88,9 @@
     $("#shipping-note").textContent = order.shippingText(result);
     $("#cart-bottles").textContent =
       `${result.bottles} botol dalam pesananmu. Ketersediaan dikonfirmasi admin.`;
+    $("#bundle-suggestion").hidden = !order.canUseBundle(cart, config);
+    $("#bundle-suggestion-text").textContent =
+      `Kamu sudah memilih isi ${config.bundle.name}. Ubah satu set menjadi paket ${money(config.bundle.price)} untuk mendapat gratis ongkir paket.`;
   }
   function notify(message) {
     const toast = $("#toast");
@@ -168,7 +171,23 @@
         : "smooth",
     });
   });
-  $("#add-bundle").addEventListener("click", () => add(config.bundle.id, 1));
+  $("#add-bundle").addEventListener("click", () =>
+    add(config.bundle.id, draft[config.bundle.id]),
+  );
+  $("#use-bundle").addEventListener("click", () => {
+    cart = order.useBundle(cart, config);
+    persist();
+    $("#cart-title").focus();
+    notify(`Satu set diubah menjadi ${config.bundle.name}.`);
+  });
+  $("#checkout-form").addEventListener(
+    "invalid",
+    (event) => {
+      if (event.target.validity.valueMissing)
+        event.target.setCustomValidity("Mohon isi bagian ini.");
+    },
+    true,
+  );
   $("#checkout-form").addEventListener("input", (event) => {
     event.target.setCustomValidity?.("");
     setStatusHidden();
@@ -210,6 +229,21 @@
       .map(([id, n]) => `${n} ${byId[id].name}`)
       .join(" + ") + ".";
   $("#bundle-price").textContent = money(config.bundle.price);
+  $("#draft-bundle").id = `draft-${config.bundle.id}`;
+  $(`#draft-${config.bundle.id}`).innerHTML = quantityControls(
+    config.bundle.id,
+    draft[config.bundle.id],
+    "catalog",
+  );
+  const separatePrice = Object.entries(config.bundle.items).reduce(
+    (total, [id, quantity]) => total + byId[id].price * quantity,
+    0,
+  );
+  $("#bundle-benefit").textContent = config.bundle.freeShipping
+    ? (separatePrice === config.bundle.price
+        ? "Harga tiga varian tetap sama. "
+        : "") + "Pilih paket untuk mendapatkan gratis ongkir."
+    : "Tiga varian dalam satu paket praktis.";
   $("#bundle-shipping").textContent = config.bundle.freeShipping
     ? "GRATIS ONGKIR"
     : "ONGKIR DIKONFIRMASI ADMIN";

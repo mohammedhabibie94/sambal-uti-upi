@@ -69,7 +69,8 @@ test("pesanan paket ditambah satuan tidak menjanjikan ongkir seluruh pesanan", (
   assert.equal(result.bottles, 4);
   assert.equal(result.bundleOnly, false);
   assert.equal(result.hasBundle, true);
-  assert.match(order.shippingText(result), /produk satuan dikonfirmasi/);
+  assert.match(order.shippingText(result), /botol tambahan di luar paket/);
+  assert.match(order.shippingText(result), /termasuk dalam satu kiriman/);
 });
 test("data tersimpan yang rusak atau dimanipulasi disaring", () => {
   for (const input of [null, false, 12, "cumi", []])
@@ -106,4 +107,28 @@ test("harga tampilan mengikuti konfigurasi, bukan nilai hardcode pada logika", (
   edited.products[0].price = 31000;
   assert.equal(order.calculate({ cumi: 2 }, edited).total, 62000);
   assert.match(order.orderMessage({ cumi: 2 }, customer, edited), /Rp62.000/);
+});
+test("urutan item mengikuti urutan pertama kali dimasukkan, juga setelah pemulihan", () => {
+  const cart = order.sanitizeCart({ paket: 1, rebon: 2, cumi: 1 }, config);
+  assert.deepEqual(
+    order.calculate(cart, config).lines.map((p) => p.id),
+    ["paket", "rebon", "cumi"],
+  );
+});
+test("saran paket memerlukan isi lengkap dan hanya mengubah satu set setelah dipilih", () => {
+  const raw = { cumi: 2, rebon: 1, teri: 1 };
+  assert.equal(order.canUseBundle(raw, config), true);
+  const converted = order.useBundle(raw, config);
+  assert.deepEqual(converted, { cumi: 1, paket: 1 });
+  assert.deepEqual(raw, { cumi: 2, rebon: 1, teri: 1 });
+  assert.equal(order.calculate(converted, config).bottles, 4);
+  assert.equal(
+    order.calculate(converted, config).total,
+    order.calculate(raw, config).total,
+  );
+  assert.equal(order.canUseBundle({ cumi: 1, rebon: 1 }, config), false);
+  assert.equal(
+    order.canUseBundle({ cumi: 1, rebon: 1, teri: 1, paket: 99 }, config),
+    false,
+  );
 });

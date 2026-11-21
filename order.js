@@ -6,22 +6,22 @@
   function sanitizeCart(raw, config) {
     const cart = {};
     if (!raw || typeof raw !== "object" || Array.isArray(raw)) return cart;
-    for (const product of entries(config)) {
-      const quantity = raw[product.id];
+    const allowed = new Set(entries(config).map((product) => product.id));
+    for (const [id, quantity] of Object.entries(raw)) {
+      if (!allowed.has(id)) continue;
       if (Number.isSafeInteger(quantity) && quantity > 0)
-        cart[product.id] = Math.min(99, quantity);
+        cart[id] = Math.min(99, quantity);
     }
     return cart;
   }
   function calculate(raw, config) {
     const cart = sanitizeCart(raw, config);
-    const lines = entries(config)
-      .filter((p) => cart[p.id])
-      .map((p) => ({
-        ...p,
-        quantity: cart[p.id],
-        subtotal: p.price * cart[p.id],
-      }));
+    const byId = Object.fromEntries(entries(config).map((p) => [p.id, p]));
+    const lines = Object.entries(cart).map(([id, quantity]) => ({
+      ...byId[id],
+      quantity,
+      subtotal: byId[id].price * quantity,
+    }));
     const bundleBottles = Object.values(config.bundle.items).reduce(
       (sum, n) => sum + n,
       0,
@@ -43,10 +43,30 @@
       hasBundle: Boolean(cart[config.bundle.id]) && config.bundle.freeShipping,
     };
   }
+  function canUseBundle(raw, config) {
+    const cart = sanitizeCart(raw, config);
+    return (
+      config.bundle.freeShipping &&
+      (cart[config.bundle.id] || 0) < 99 &&
+      Object.entries(config.bundle.items).every(
+        ([id, quantity]) => (cart[id] || 0) >= quantity,
+      )
+    );
+  }
+  function useBundle(raw, config) {
+    const cart = sanitizeCart(raw, config);
+    if (!canUseBundle(cart, config)) return cart;
+    for (const [id, quantity] of Object.entries(config.bundle.items)) {
+      cart[id] -= quantity;
+      if (!cart[id]) delete cart[id];
+    }
+    cart[config.bundle.id] = (cart[config.bundle.id] || 0) + 1;
+    return cart;
+  }
   function shippingText(order) {
     if (order.bundleOnly) return "Gratis ongkir";
     if (order.hasBundle)
-      return "Gratis ongkir untuk paket. Ongkir produk satuan dikonfirmasi admin.";
+      return "Gratis ongkir hanya untuk paket. Ongkir botol tambahan di luar paket, termasuk dalam satu kiriman, dikonfirmasi admin sebelum pesanan disetujui.";
     return "Ongkir dikonfirmasi admin melalui WhatsApp.";
   }
   function orderMessage(raw, customer, config) {
@@ -88,6 +108,8 @@
     rupiah,
     sanitizeCart,
     calculate,
+    canUseBundle,
+    useBundle,
     shippingText,
     orderMessage,
     whatsappUrl,

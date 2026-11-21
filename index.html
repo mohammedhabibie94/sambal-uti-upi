@@ -144,10 +144,13 @@
             <strong id="bundle-price"></strong
             ><span id="bundle-shipping"></span>
           </div>
-          <button class="button light" id="add-bundle">
-            Masukkan paket <span aria-hidden="true">+</span>
-          </button>
-          <p class="bundle-footnote">Tiga rasa untuk menemani meja makanmu.</p>
+          <div class="bundle-actions">
+            <div id="draft-bundle"></div>
+            <button class="button light" id="add-bundle">
+              Masukkan paket <span aria-hidden="true">+</span>
+            </button>
+          </div>
+          <p class="bundle-footnote" id="bundle-benefit"></p>
         </div>
       </section>
       <section
@@ -274,7 +277,7 @@
       <div class="cart-header">
         <div>
           <p class="eyebrow">TINGGAL SELANGKAH LAGI</p>
-          <h2 id="cart-title">Keranjangmu</h2>
+          <h2 id="cart-title" tabindex="-1">Keranjangmu</h2>
         </div>
         <button
           class="icon-button"
@@ -295,6 +298,12 @@
         </div>
         <div id="cart-filled" hidden>
           <div id="cart-items"></div>
+          <div class="bundle-suggestion" id="bundle-suggestion" hidden>
+            <p id="bundle-suggestion-text"></p>
+            <button type="button" id="use-bundle">
+              Ubah satu set menjadi paket →
+            </button>
+          </div>
           <div class="cart-summary">
             <div>
               <span id="total-label">Subtotal produk</span

@@ -492,6 +492,38 @@ h1 em {
   opacity: 0.8;
   font-size: 11px !important;
 }
+.bundle-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.bundle-actions .quantity {
+  background: var(--bg);
+  color: var(--text);
+}
+.bundle-suggestion {
+  padding: 16px;
+  margin-bottom: 24px;
+  border: 1px solid var(--green);
+  border-radius: 7px;
+  background: var(--pale);
+}
+.bundle-suggestion p {
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 0 0 10px;
+}
+.bundle-suggestion button {
+  background: transparent;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  min-height: 44px;
+  padding: 8px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 .story {
   display: grid;
   grid-template-columns: 1fr 1fr;
